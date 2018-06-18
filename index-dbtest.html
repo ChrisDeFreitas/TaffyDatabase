@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="lang" content="en">
+<meta name="author" content="Chris DeFreitas">
+<meta http-equiv="Reply-to" content="chrisd@europa.com">
+<title>DB Test</title>
+
+<script src="taffy.js"></script>
+<script src="db.js"></script>
+
+<script>
+var	dir = console.dir,
+		err = console.error,
+		log = console.log
+		
+window.onload = function(){
+	var db = new TaffyDatabase('testLocalStorage')
+
+	let tb = null
+		, stored = db.isStored()
+	
+	if(stored){
+		log('Loading database from localstorage')
+		db.retrieve()
+		tb = db.table('test')
+		tb.insert({x:3})	
+	}
+	else {
+		log('Creating database tables')
+		tb = db.open('test', {x:1})
+	
+		db.open('city', [
+		  {name:'New York',state:'NY'},
+		  {name:'Las Vegas',state:'NV'},
+		  {name:'Boston',state:'MA'}
+		])
+		db.open('state', [
+		  {name: 'New York', abbreviation: 'NY'},
+		  {name: 'Nevada', abbreviation: 'NV'},
+		  {name: 'Massachusetts', abbreviation: 'MA'}
+		])
+		
+		//test: save record using Taffy api
+		tb.insert({y:2})	
+	}
+	log('DB Length (or table count)', db.length)
+	
+	dir(db)
+	db.rowInsert('test', {x:9, y:3})
+	db.rowInsert('test', {x:4, y:4}) 
+	db.rowInsert('test', {x:7, y:5}) 
+	db.rowUpdate('test', "T4R3", {x:5})
+
+	for(let ii=10; ii < 4000; ii++){
+		if(ii % 3 == 0) continue
+		db.rowInsert('test', {x:ii, y:0}) 
+	}
+	db.rowInsert('test', [{x:123, y:6},{x:126, y:6},{x:129, y:6}]) 
+
+	log(`time sorting ${db.tableRaw('test').length} records`)
+	console.time('sort')
+	db.table('test').sort('x')
+	console.timeEnd('sort')
+	
+	//dir('tableRaw', db.tableRaw('test'))	
+
+	log('\ntest rowInsert(name, data, key), maintain sort order')	
+	console.time('Insert Sorted')
+	db.rowInsert('test', {x:0, y:7}, 'x') 
+	db.rowInsert('test', {x:29, y:7}, 'x') 
+	db.rowInsert('test', {x:30, y:7}, 'x') 
+	db.rowInsert('test', {x:300000, y:7}, 'x') 
+	console.timeEnd('Insert Sorted')
+
+
+	console.time('tableIsSorted(test)')
+	let x = db.tableIsSorted('test', 'x')
+	console.timeEnd('tableIsSorted(test)')
+	log(x)
+
+	log('tableRaw(test):')	
+	dir(db.tableRaw('test'))	
+
+/*
+	log('compare timing of context() vs TOb with 10000 records')
+	log('avg', db.table('test')().avg('x') )
+return
+*/
+	log('\ntest rowFind(), binary search')	
+	console.time('bSearch')
+	log( db.rowFind('test', 'x', 264) )
+	console.timeEnd('bSearch')
+	
+	console.time('filter')
+	log( db.table('test')().filter({x:264}).get() )
+	console.timeEnd('filter')
+
+	console.time('query')
+	log( db.table('test')({x:264}).get() )
+	console.timeEnd('query')
+return
+
+	log('last record', tb().last() )
+	log('distinct x', tb().distinct('x') )
+	log('sum x', tb().sum('x') )
+
+	// Conditional Join
+	let qry = db.table('city')()
+	  .join( db.table('state'), [ 'state', 'abbreviation' ])
+
+	log('join qry', qry.get())
+
+	if(stored===false){ //test: save to local storage
+		db.store()
+		log('isStored', db.isStored() )
+	}
+
+	//test get id from newly inserted record
+	qry =	tb.insert({z:9})
+	let id1 = qry.get()[0]['___id']
+	log( 'Save id manual', id1 )
+
+	let id2 = db.rowInsert('test',{zz:99})
+	log( 'rowInsert() id', id2, db.row('test', id2) )
+	let row = db.rowUpdate('test',id2,{zz:999, x:5})
+	log( 'rowUpdate() id', id2, row, db.row('test', id2) )
+	
+	//test filtering
+	log('filter base', db.table('test')().get())
+	log('filter select', db.table('test')({ x:{'===':3} }).get() )
+	db.rowUpdate('test','T000003R000002', {x:3})
+	log('filter update', db.table('test')({ x:{'===':3} }).get() )
+	log('filter base', db.table('test')().get())
+
+	var newdb = new TaffyDatabase
+	log(newdb)
+	
+	log('\nTest tableJSON(test)')
+	log('array:', db.table('test')().get() )
+	let json = db.tableJSON('test')
+	log('json', json)
+	
+	log('\nTest tableStore(test) - check debug tools/storage/localstorage')
+	db.tableStore('test')
+	
+	log('\nTest tableEmpty(test)')
+	log( db.tableEmpty('test').tableJSON('test') )
+
+	log("\nTest tableImport(test)")
+	log( db.tableImport('test', json).tableJSON('test') )
+
+	log("\nTest db.tableLoad(test)")
+	log( db.tableEmpty('test')
+				 .tableLoad('test')
+				 .tableJSON('test') )
+
+	log('\nTest tableLoad(bouyant) - table not in localstorage')
+	log(db.tableLoad('bouyant').tableJSON('bouyant') )
+}
+</script>
+</head>
+<body>
+</body>
+
+

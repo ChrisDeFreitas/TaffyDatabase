@@ -1,0 +1,7 @@
+.bak
+.idea
+.git
+.gitconfig
+*.swp
+npm-debug.log
+node_modules
