@@ -14,7 +14,7 @@ This repository is a clone of the original TaffyDb repo, https://github.com/typi
 	- taffy-original.js: unmodified TabbyDb object, provided for reference  
   
 ##	Notes  
- - the database interface is fairly simple, see db.js for interface and index-dbtest.html for example code
+ - the database interface is fairly simple, see db.js for interface, and index-dbtest.html for example code
  - database === array of Taffy()  
  - table === Taffy()  
  - row   === Taffy().get()[n]; a Javascript object  
