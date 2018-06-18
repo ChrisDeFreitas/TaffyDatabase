@@ -20,7 +20,7 @@ This repository is a clone of the original TaffyDb repo, https://github.com/typi
  - row   === Taffy().get()[n]; a Javascript object  
  - id    === Taffy().get()[n].___id  
  - load/retrieve/store functions use localstorage  
- - all functions taking table name arguments assume the TaffyDatabase.list[name] exists  
+ - all functions taking table name arguments assume TaffyDatabase.list[name] exists  
 	
 ## Important changes to TaffyDb  
  - code changes in taffy.js have comments with "Chris: ..."  
