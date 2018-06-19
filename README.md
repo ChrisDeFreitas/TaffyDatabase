@@ -10,8 +10,9 @@ meant or required to be universally applicable.
 This repository is a clone of the original TaffyDb repo, https://github.com/typicaljoe/taffydb, with the few files required in the root folder:  
 	- db.js: contains TaffyDatabase object  
 	- index-dbtest.html: functions to test TaffyDatabase, writes output to Javascript console, no HTML content  
-	- taffy.js: modified TabbyDb object  
-	- taffy-original.js: unmodified TabbyDb object, provided for reference  
+	- taffy.js: modified TaffyDb object  
+	- taffy-original.js: unmodified TaffyDb object, provided for reference
+	- docs folder: original TaffyDb documentation
   
 ##	Notes  
  - the database interface is fairly simple, see db.js for interface, and index-dbtest.html for example code
@@ -29,3 +30,35 @@ This repository is a clone of the original TaffyDb repo, https://github.com/typi
  - modified insert() to insert record in sorted order  
  - made TOb public via Taffy().getDBI().TOb (required to speed bSearch() )  
 
+## Sample code from index-dbtest.html
+```
+	var db = new TaffyDatabase('testLocalStorage')
+	let tb = null
+		, stored = db.isStored()
+	
+	if(stored){
+		log('Loading database from localstorage')
+		db.retrieve()
+		tb = db.table('test')
+		tb.insert({x:3})	
+	}
+	else {
+		log('Creating database tables')
+		tb = db.open('test', {x:1})
+	
+		db.open('city', [
+		  {name:'New York',state:'NY'},
+		  {name:'Las Vegas',state:'NV'},
+		  {name:'Boston',state:'MA'}
+		])
+		db.open('state', [
+		  {name: 'New York', abbreviation: 'NY'},
+		  {name: 'Nevada', abbreviation: 'NV'},
+		  {name: 'Massachusetts', abbreviation: 'MA'}
+		])
+		
+		//test: save record using Taffy api
+		tb.insert({y:2})	
+	}
+	log('DB Length (or table count)', db.length)
+```
