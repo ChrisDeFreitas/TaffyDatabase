@@ -37,7 +37,7 @@ This repository is a clone of the original TaffyDb repo, https://github.com/typi
 		, stored = db.isStored()
 	
 	if(stored){
-		log('Loading database from localstorage')
+		console.log('Loading database from localstorage')
 		db.retrieve()
 		tb = db.table('test')
 		tb.insert({x:3})	
@@ -45,6 +45,7 @@ This repository is a clone of the original TaffyDb repo, https://github.com/typi
 	else {
 		log('Creating database tables')
 		tb = db.open('test', {x:1})
+		tb.insert({y:2})		//save record using Taffy api
 	
 		db.open('city', [
 		  {name:'New York',state:'NY'},
@@ -57,8 +58,6 @@ This repository is a clone of the original TaffyDb repo, https://github.com/typi
 		  {name: 'Massachusetts', abbreviation: 'MA'}
 		])
 		
-		//test: save record using Taffy api
-		tb.insert({y:2})	
 	}
-	log('DB Length (or table count)', db.length)
+	console.log('DB Length (or table count)', db.length)
 ```
