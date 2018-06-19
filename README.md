@@ -8,11 +8,11 @@ a large investment of time or brain power.  As a result the changes to TaffyDb a
 meant or required to be universally applicable.
 
 This repository is a clone of the original TaffyDb repo, https://github.com/typicaljoe/taffydb, with the few files required in the root folder:  
-	- db.js: contains TaffyDatabase object  
-	- index-dbtest.html: functions to test TaffyDatabase, writes output to Javascript console, no HTML content  
-	- taffy.js: modified TaffyDb object  
-	- taffy-original.js: unmodified TaffyDb object, provided for reference  
-	- docs folder: original TaffyDb documentation
+ - db.js: contains TaffyDatabase object  
+ - index-dbtest.html: functions to test TaffyDatabase, writes output to Javascript console, no HTML content  
+ - taffy.js: modified TaffyDb object  
+ - taffy-original.js: unmodified TaffyDb object, provided for reference  
+ - docs folder: original TaffyDb documentation
   
 ##	Notes  
  - the database interface is fairly simple, see db.js for interface, and index-dbtest.html for example code
