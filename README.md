@@ -33,8 +33,8 @@ This repository is a clone of the original TaffyDb repo, https://github.com/typi
 ## Sample code from index-dbtest.html
 ```
 	var db = new TaffyDatabase('testLocalStorage')
-	let tb = null
-		, stored = db.isStored()
+	let tb = null,
+	    stored = db.isStored()
 	
 	if(stored){
 		console.log('Loading database from localstorage')
