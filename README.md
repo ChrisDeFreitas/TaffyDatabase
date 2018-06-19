@@ -11,7 +11,7 @@ This repository is a clone of the original TaffyDb repo, https://github.com/typi
 	- db.js: contains TaffyDatabase object  
 	- index-dbtest.html: functions to test TaffyDatabase, writes output to Javascript console, no HTML content  
 	- taffy.js: modified TaffyDb object  
-	- taffy-original.js: unmodified TaffyDb object, provided for reference
+	- taffy-original.js: unmodified TaffyDb object, provided for reference  
 	- docs folder: original TaffyDb documentation
   
 ##	Notes  

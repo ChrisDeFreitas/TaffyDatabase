@@ -2,6 +2,7 @@
 .idea
 .git
 .gitconfig
+*.sh
 *.swp
 npm-debug.log
 node_modules
